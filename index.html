@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>💕 Thư Gửi Em 💕</title>
+    <title>💕 FOR YOU 💕</title>
     <style>
         * {
             margin: 0;
@@ -12,12 +12,11 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Times New Roman', serif;
+            font-family: 'Times New Roman', serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            overflow: hidden;
+            overflow-x: hidden;
             height: 100vh;
-            position: fixed;
-            width: 100%;
+            position: relative;
         }
 
         /* Nút mở thư */
@@ -33,7 +32,7 @@
             justify-content: center;
             align-items: center;
             color: white;
-            font-size: 1.4rem;
+            font-size: 1.8rem;
             z-index: 1000;
             cursor: pointer;
             transition: all 0.5s ease;
@@ -48,8 +47,8 @@
         }
 
         .envelope {
-            width: 100px;
-            height: 70px;
+            width: 120px;
+            height: 80px;
             background: white;
             position: relative;
             border-radius: 5px;
@@ -64,8 +63,8 @@
             left: 0;
             width: 0;
             height: 0;
-            border: 50px solid transparent;
-            border-bottom: 35px solid #ff6b6b;
+            border: 60px solid transparent;
+            border-bottom: 40px solid #ff6b6b;
             border-top: none;
         }
 
@@ -75,68 +74,91 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 1.8rem;
+            font-size: 2rem;
         }
 
         /* Container chính */
         .main-container {
             position: relative;
             width: 100%;
-            height: 100vh;
+            min-height: 100vh;
             display: none;
-            overflow: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
-        /* Video nền */
+        /* Video nền - tối ưu cho mobile */
         .background-video {
-            position: absolute;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            opacity: 0.6;
+            z-index: -2;
+        }
+
+        /* Fallback background cho mobile */
+        .video-fallback {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            opacity: 0.6;
+            background: linear-gradient(135deg, 
+                rgba(255, 107, 107, 0.8) 0%, 
+                rgba(255, 142, 142, 0.8) 25%,
+                rgba(102, 126, 234, 0.8) 50%,
+                rgba(118, 75, 162, 0.8) 75%,
+                rgba(255, 107, 107, 0.8) 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         /* Overlay */
         .overlay {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.3);
+            z-index: -1;
         }
 
         /* Nội dung chính */
         .content {
-            position: absolute;
-            top: 0;
-            left: 0;
+            position: relative;
             width: 100%;
-            height: 100%;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 20px;
             z-index: 10;
-            padding: 15px;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
         }
 
         .love-letter {
             background: rgba(255,255,255,0.15);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             border: 1px solid rgba(255,255,255,0.3);
             width: 100%;
-            max-width: 400px;
-            max-height: 85vh;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
+            max-width: 500px;
+            margin: auto;
         }
 
         .letter-title {
@@ -146,25 +168,25 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
             animation: glow 2s ease-in-out infinite alternate;
             text-align: center;
-            line-height: 1.2;
+            line-height: 1.3;
         }
 
         .letter-content {
             font-size: 1rem;
             line-height: 1.6;
             margin-bottom: 1.5rem;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
             color: white;
-            white-space: pre-line;
+            text-align: left;
         }
 
         .signature {
             font-size: 1.1rem;
             color: #ff6b6b;
             font-weight: bold;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
             text-align: center;
-            line-height: 1.3;
+            line-height: 1.4;
         }
 
         /* Hiệu ứng gõ chữ */
@@ -175,7 +197,7 @@
 
         /* Trái tim bay */
         .floating-hearts {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -190,16 +212,16 @@
             font-size: 1.5rem;
             color: #ff6b6b;
             animation: float 6s linear infinite;
-            opacity: 0.6;
+            opacity: 0.8;
         }
 
         /* Điều khiển âm thanh */
         .music-control {
             position: fixed;
-            top: 15px;
-            right: 15px;
-            background: rgba(255,255,255,0.2);
-            border: none;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.25);
+            border: 2px solid rgba(255,255,255,0.3);
             border-radius: 50%;
             width: 50px;
             height: 50px;
@@ -217,25 +239,29 @@
 
         .music-control:hover,
         .music-control:active {
-            background: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.4);
             transform: scale(1.1);
         }
 
         /* Animations */
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
+            50% { transform: scale(1.05); }
         }
 
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-8px); }
-            60% { transform: translateY(-4px); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
         }
 
         @keyframes glow {
-            from { text-shadow: 0 0 15px #ffeb3b; }
-            to { text-shadow: 0 0 25px #ffeb3b, 0 0 35px #ffeb3b; }
+            from { 
+                text-shadow: 0 0 10px #ffeb3b, 0 0 20px rgba(255,235,59,0.5); 
+            }
+            to { 
+                text-shadow: 0 0 20px #ffeb3b, 0 0 30px rgba(255,235,59,0.8), 0 0 40px rgba(255,235,59,0.3); 
+            }
         }
 
         @keyframes blink {
@@ -245,59 +271,32 @@
 
         @keyframes float {
             0% {
-                transform: translateY(100vh) translateX(-30px) rotate(0deg);
+                transform: translateY(100vh) translateX(-20px) rotate(0deg);
                 opacity: 0;
             }
             10% {
-                opacity: 0.6;
+                opacity: 0.8;
             }
             90% {
-                opacity: 0.6;
+                opacity: 0.8;
             }
             100% {
-                transform: translateY(-50px) translateX(30px) rotate(360deg);
+                transform: translateY(-50px) translateX(20px) rotate(360deg);
                 opacity: 0;
             }
         }
 
-        /* Mobile optimizations */
-        @media (max-width: 480px) {
-            body {
-                font-size: 14px;
-            }
-            
-            .open-letter {
-                font-size: 1.2rem;
-                padding: 15px;
-            }
-            
-            .open-letter h1 {
-                font-size: 1.6rem;
-                margin-bottom: 1.5rem;
-            }
-            
-            .envelope {
-                width: 80px;
-                height: 56px;
-            }
-            
-            .envelope::before {
-                border: 40px solid transparent;
-                border-bottom: 28px solid #ff6b6b;
-            }
-            
-            .envelope::after {
-                font-size: 1.4rem;
-            }
-            
+        /* Mobile specific styles */
+        @media (max-width: 768px) {
             .content {
-                padding: 10px;
+                padding: 15px;
+                min-height: 100vh;
             }
             
             .love-letter {
-                padding: 15px;
-                border-radius: 12px;
-                max-height: 90vh;
+                padding: 1.5rem;
+                margin: 10px;
+                border-radius: 15px;
             }
             
             .letter-title {
@@ -306,7 +305,7 @@
             }
             
             .letter-content {
-                font-size: 0.9rem;
+                font-size: 0.95rem;
                 line-height: 1.5;
                 margin-bottom: 1rem;
             }
@@ -315,12 +314,42 @@
                 font-size: 1rem;
             }
             
+            .open-letter {
+                font-size: 1.4rem;
+                padding: 15px;
+            }
+            
+            .open-letter h1 {
+                font-size: 1.6rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .open-letter p {
+                font-size: 1rem !important;
+                text-align: center;
+                line-height: 1.4;
+            }
+            
+            .envelope {
+                width: 100px;
+                height: 70px;
+            }
+            
+            .envelope::before {
+                border: 50px solid transparent;
+                border-bottom: 35px solid #ff6b6b;
+            }
+            
+            .envelope::after {
+                font-size: 1.5rem;
+            }
+            
             .music-control {
                 width: 45px;
                 height: 45px;
-                top: 10px;
-                right: 10px;
-                font-size: 1.1rem;
+                font-size: 1rem;
+                top: 15px;
+                right: 15px;
             }
             
             .heart {
@@ -328,10 +357,11 @@
             }
         }
 
-        /* iPhone specific optimizations */
-        @media (max-width: 390px) {
-            .open-letter h1 {
-                font-size: 1.4rem;
+        /* iPhone specific adjustments */
+        @media (max-width: 414px) {
+            .love-letter {
+                padding: 1.2rem;
+                margin: 5px;
             }
             
             .letter-title {
@@ -339,48 +369,47 @@
             }
             
             .letter-content {
-                font-size: 0.85rem;
+                font-size: 0.9rem;
             }
             
-            .love-letter {
-                padding: 12px;
+            .signature {
+                font-size: 0.95rem;
             }
         }
 
-        /* Landscape mode optimization */
-        @media (max-height: 600px) and (orientation: landscape) {
+        /* Landscape mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
             .content {
-                align-items: flex-start;
-                padding-top: 20px;
+                padding: 10px;
             }
             
             .love-letter {
-                max-height: 95vh;
+                padding: 1rem;
+                max-height: 90vh;
+                overflow-y: auto;
             }
             
             .letter-title {
-                font-size: 1.4rem;
-                margin-bottom: 1rem;
+                font-size: 1.2rem;
+                margin-bottom: 0.8rem;
             }
             
             .letter-content {
-                font-size: 0.9rem;
+                font-size: 0.85rem;
+                margin-bottom: 0.8rem;
             }
         }
 
-        /* Safe area insets for iPhone */
-        @supports (padding: max(0px)) {
-            .content {
-                padding-left: max(15px, env(safe-area-inset-left));
-                padding-right: max(15px, env(safe-area-inset-right));
-                padding-top: max(15px, env(safe-area-inset-top));
-                padding-bottom: max(15px, env(safe-area-inset-bottom));
-            }
-            
-            .music-control {
-                top: max(15px, env(safe-area-inset-top));
-                right: max(15px, env(safe-area-inset-right));
-            }
+        /* Cải thiện hiệu suất cho mobile */
+        .main-container {
+            will-change: transform;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .background-video {
+            will-change: transform;
+            transform: translate3d(-50%, -50%, 0);
         }
     </style>
 </head>
@@ -389,15 +418,16 @@
     <div class="open-letter" id="openLetter">
         <h1>💕 Thư Gửi Em Bé 💕</h1>
         <div class="envelope"></div>
-        <p style="margin-top: 1.5rem; font-size: 1rem; text-align: center; line-height: 1.4;">
-            Chạm để mở thư từ trái tim của anh ❤️
-        </p>
+        <p style="margin-top: 2rem; font-size: 1.2rem;">Nhấn để mở thư từ trái tim của anh ❤️</p>
     </div>
 
     <!-- Container chính -->
     <div class="main-container" id="mainContainer">
-        <!-- Video nền -->
-        <video class="background-video" autoplay muted loop playsinline>
+        <!-- Fallback background cho mobile -->
+        <div class="video-fallback"></div>
+        
+        <!-- Video nền (sẽ ẩn trên mobile nếu không load được) -->
+        <video class="background-video" autoplay muted loop playsinline id="backgroundVideo">
             <source src="https://txmov2.a.kwimgs.com/upic/2024/05/08/11/BMjAyNDA1MDgxMTQ3MjBfMzAyOTc4ODMzNF8xMzE4NzA2NDcxMzJfMF8z_b_B154839b05f89ba0ef9ee25a3d83558cd.mp4" type="video/mp4">
         </video>
         
@@ -410,12 +440,12 @@
         <!-- Nội dung -->
         <div class="content">
             <div class="love-letter">
-                <h1 class="letter-title">💝 Thư Gửi Em Bé 💝</h1>
+                <h1 class="letter-title">💝 Thư Gửi Em Yêu 💝</h1>
                 <div class="letter-content">
                     <p id="typewriterText" class="typewriter"></p>
                 </div>
                 <div class="signature">
-                    💕 Với tất cả tình yêu của anh 💕
+                    💕 Với tất cả tình yêu của anhhh 💕
                 </div>
             </div>
         </div>
@@ -427,7 +457,7 @@
     </div>
 
     <!-- Audio -->
-    <audio id="backgroundMusic" loop preload="auto">
+    <audio id="backgroundMusic" loop preload="none">
         <source src="DamDuoi-KidsaiBbynascar-7076233.mp3" type="audio/mpeg">
     </audio>
 
@@ -435,13 +465,18 @@
         // Văn bản sẽ được gõ ra
         const loveText = `Em yêu của anh,
 
-Từng giây phút bên em đều là những khoảnh khắc đẹp nhất trong cuộc đời anh. Em như ánh nắng ấm áp, xua tan mọi u buồn trong lòng anh.
+Từng giây phút bên em đều là những khoảnh khắc đẹp nhất trong cuộc đời anh. 
+Em như ánh nắng ấm áp, xua tan mọi u buồn trong lòng anh.
 
-Anh yêu nụ cười của em, yêu cách em cười khi anh làm những điều ngớ ngẩn. Anh yêu đôi mắt em, trong đó anh thấy cả một tương lai tươi đẹp.
+Anh yêu nụ cười của em, yêu cách em cười khi anh làm những điều ngớ ngẩn.
+Anh yêu đôi mắt em, trong đó anh thấy cả một tương lai tươi đẹp.
 
-Dù có những lúc chúng ta hiểu lầm nhau, nhưng tình yêu của anh dành cho em không bao giờ thay đổi. Em là điều tuyệt vời nhất đã đến với anh.
+Dù có những lúc chúng ta hiểu lầm nhau, nhưng tình yêu của anh dành cho em 
+không bao giờ thay đổi. Em là điều tuyệt vời nhất đã đến với anh.
 
-Anh luôn bên em, che chở và yêu thương em mỗi ngày. Hãy để anh được là người đàn ông may mắn nhất trên đời này bằng cách ở bên anh mãi mãi, em nhé!`;
+Anh luôn bên em, che chở và yêu thương em mỗi ngày.
+Hãy để anh được là người đàn ông may mắn nhất trên đời này 
+bằng cách ở bên anh mãi mãi, em nhé!`;
 
         // Elements
         const openLetter = document.getElementById('openLetter');
@@ -450,20 +485,34 @@ Anh luôn bên em, che chở và yêu thương em mỗi ngày. Hãy để anh đ
         const backgroundMusic = document.getElementById('backgroundMusic');
         const musicControl = document.getElementById('musicControl');
         const floatingHearts = document.getElementById('floatingHearts');
+        const backgroundVideo = document.getElementById('backgroundVideo');
 
         let musicPlaying = false;
         let typewriterIndex = 0;
         let isTyping = false;
+        let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-        // Prevent zoom on double tap (iOS)
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function (event) {
-            const now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
+        // Kiểm tra và xử lý video trên mobile
+        function handleVideoForMobile() {
+            if (isMobile) {
+                backgroundVideo.addEventListener('error', function() {
+                    console.log('Video không load được trên mobile, sử dụng fallback background');
+                    backgroundVideo.style.display = 'none';
+                });
+                
+                // Thử load video
+                backgroundVideo.addEventListener('loadeddata', function() {
+                    console.log('Video loaded successfully on mobile');
+                });
+                
+                // Timeout fallback
+                setTimeout(() => {
+                    if (backgroundVideo.readyState < 3) {
+                        backgroundVideo.style.display = 'none';
+                    }
+                }, 3000);
             }
-            lastTouchEnd = now;
-        }, false);
+        }
 
         // Mở thư
         openLetter.addEventListener('click', function() {
@@ -471,24 +520,22 @@ Anh luôn bên em, che chở và yêu thương em mỗi ngày. Hãy để anh đ
             setTimeout(() => {
                 openLetter.style.display = 'none';
                 mainContainer.style.display = 'block';
+                handleVideoForMobile();
                 startTypewriter();
                 createFloatingHearts();
-                playMusic();
+                // Không tự động phát nhạc trên mobile
+                if (!isMobile) {
+                    playMusic();
+                }
             }, 500);
         });
 
-        // Touch event for mobile
-        openLetter.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            openLetter.click();
-        });
-
-        // Hiệu ứng gõ chữ
+        // Hiệu ứng gõ chữ (tối ưu cho mobile)
         function startTypewriter() {
             if (isTyping) return;
             isTyping = true;
             
-            const typeSpeed = 60; // Slower for mobile reading
+            const typeSpeed = isMobile ? 30 : 50; // Nhanh hơn trên mobile
             
             function typeNextChar() {
                 if (typewriterIndex < loveText.length) {
@@ -504,30 +551,28 @@ Anh luôn bên em, che chở và yêu thương em mỗi ngày. Hãy để anh đ
             typeNextChar();
         }
 
-        // Tạo trái tim bay
+        // Tạo trái tim bay (giảm tần suất trên mobile)
         function createFloatingHearts() {
             const hearts = ['💖', '💕', '💗', '💓', '💝', '❤️', '💜', '💙'];
+            const interval = isMobile ? 1500 : 800; // Ít hơn trên mobile để tăng hiệu suất
             
-            const heartInterval = setInterval(() => {
-                // Reduce frequency on mobile
-                if (Math.random() > 0.7) {
-                    const heart = document.createElement('div');
-                    heart.className = 'heart';
-                    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-                    heart.style.left = Math.random() * 100 + '%';
-                    heart.style.animationDuration = (Math.random() * 2 + 4) + 's';
-                    heart.style.fontSize = (Math.random() * 0.5 + 1) + 'rem';
-                    
-                    floatingHearts.appendChild(heart);
-                    
-                    // Xóa trái tim sau khi animation kết thúc
-                    setTimeout(() => {
-                        if (heart.parentNode) {
-                            heart.parentNode.removeChild(heart);
-                        }
-                    }, 6500);
-                }
-            }, 1200);
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 2 + 4) + 's';
+                heart.style.fontSize = (Math.random() * 0.5 + 1.2) + 'rem';
+                
+                floatingHearts.appendChild(heart);
+                
+                // Xóa trái tim sau khi animation kết thúc
+                setTimeout(() => {
+                    if (heart.parentNode) {
+                        heart.parentNode.removeChild(heart);
+                    }
+                }, 7000);
+            }, interval);
         }
 
         // Điều khiển nhạc
@@ -539,10 +584,7 @@ Anh luôn bên em, che chở và yêu thương em mỗi ngày. Hãy để anh đ
             musicControl.textContent = '🎵';
         }
 
-        musicControl.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
+        musicControl.addEventListener('click', function() {
             if (musicPlaying) {
                 backgroundMusic.pause();
                 musicControl.textContent = '🔇';
@@ -552,43 +594,46 @@ Anh luôn bên em, che chở và yêu thương em mỗi ngày. Hãy để anh đ
                     musicControl.textContent = '🎵';
                     musicPlaying = true;
                 }).catch(e => {
-                    console.log('Lỗi phát nhạc:', e);
+                    console.log('Không thể phát nhạc:', e);
                 });
             }
         });
 
-        // Touch event for music control
-        musicControl.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            musicControl.click();
+        // Xử lý touch events cho mobile
+        let touchStartTime = 0;
+        document.addEventListener('touchstart', function(e) {
+            touchStartTime = Date.now();
         });
 
-        // Auto play music on user interaction
-        const enableAudio = () => {
-            if (!musicPlaying && backgroundMusic.paused) {
+        document.addEventListener('touchend', function(e) {
+            const touchDuration = Date.now() - touchStartTime;
+            if (touchDuration < 500 && !musicPlaying) { // Tap nhanh
                 playMusic();
             }
-        };
-
-        document.addEventListener('touchstart', enableAudio, { once: true });
-        document.addEventListener('click', enableAudio, { once: true });
-
-        // Handle orientation change
-        window.addEventListener('orientationchange', function() {
-            setTimeout(() => {
-                window.scrollTo(0, 0);
-            }, 100);
         });
 
-        // Prevent scrolling on body
-        document.body.addEventListener('touchmove', function(e) {
-            e.preventDefault();
-        }, { passive: false });
+        // Phát nhạc khi người dùng tương tác (fallback)
+        document.addEventListener('click', function() {
+            if (!musicPlaying) {
+                playMusic();
+            }
+        }, { once: true });
 
-        // Allow scrolling only in love letter content
-        document.querySelector('.love-letter').addEventListener('touchmove', function(e) {
-            e.stopPropagation();
+        // Tối ưu hiệu suất cho mobile
+        if (isMobile) {
+            // Giảm chất lượng animation trên mobile yếu
+            const isLowEndDevice = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2;
+            if (isLowEndDevice) {
+                document.body.style.setProperty('--animation-duration', '4s');
+            }
+        }
+
+        // Xử lý orientation change
+        window.addEventListener('orientationchange', function() {
+            setTimeout(() => {
+                // Refresh layout sau khi xoay màn hình
+                window.scrollTo(0, 0);
+            }, 100);
         });
     </script>
 </body>
