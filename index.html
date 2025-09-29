@@ -2,8 +2,8 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💕 Thư Tình Yêu 💕</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>💕 Thư Gửi Em 💕</title>
     <style>
         * {
             margin: 0;
@@ -16,6 +16,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             overflow: hidden;
             height: 100vh;
+            touch-action: manipulation; /* Tối ưu cho touch */
         }
 
         /* Nút mở thư */
@@ -31,21 +32,24 @@
             justify-content: center;
             align-items: center;
             color: white;
-            font-size: 1.8rem;
+            font-size: clamp(1.2rem, 4vw, 1.8rem); /* Responsive font */
             z-index: 1000;
             cursor: pointer;
             transition: all 0.5s ease;
+            padding: 1rem;
+            text-align: center;
         }
 
         .open-letter h1 {
-            margin-bottom: 2rem;
+            margin-bottom: clamp(1rem, 4vw, 2rem);
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             animation: pulse 2s infinite;
+            font-size: clamp(1.5rem, 6vw, 2.5rem);
         }
 
         .envelope {
-            width: 120px;
-            height: 80px;
+            width: clamp(80px, 20vw, 120px);
+            height: clamp(53px, 13vw, 80px);
             background: white;
             position: relative;
             border-radius: 5px;
@@ -60,8 +64,8 @@
             left: 0;
             width: 0;
             height: 0;
-            border: 60px solid transparent;
-            border-bottom: 40px solid #ff6b6b;
+            border: clamp(40px, 10vw, 60px) solid transparent;
+            border-bottom: clamp(27px, 7vw, 40px) solid #ff6b6b;
             border-top: none;
         }
 
@@ -71,7 +75,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 2rem;
+            font-size: clamp(1.2rem, 4vw, 2rem);
         }
 
         /* Container chính */
@@ -82,13 +86,16 @@
             display: none;
         }
 
-        /* Video nền */
+        /* Video nền - tối ưu cho mobile */
         .background-video {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
             object-fit: cover;
             opacity: 0.7;
         }
@@ -112,36 +119,40 @@
             text-align: center;
             color: white;
             z-index: 10;
-            max-width: 800px;
-            padding: 2rem;
+            max-width: min(90vw, 800px); /* Responsive width */
+            padding: clamp(1rem, 4vw, 2rem);
+            width: 100%;
         }
 
         .love-letter {
             background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 3rem;
+            border-radius: clamp(15px, 4vw, 20px);
+            padding: clamp(1.5rem, 5vw, 3rem);
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             border: 1px solid rgba(255,255,255,0.2);
+            max-height: 80vh; /* Giới hạn chiều cao */
+            overflow-y: auto; /* Scroll nếu cần */
         }
 
         .letter-title {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
+            font-size: clamp(1.8rem, 6vw, 2.5rem);
+            margin-bottom: clamp(1rem, 4vw, 2rem);
             color: #ffeb3b;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
             animation: glow 2s ease-in-out infinite alternate;
         }
 
         .letter-content {
-            font-size: 1.3rem;
-            line-height: 1.8;
-            margin-bottom: 2rem;
+            font-size: clamp(1rem, 3.5vw, 1.3rem);
+            line-height: 1.6;
+            margin-bottom: clamp(1rem, 4vw, 2rem);
             text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+            text-align: left; /* Căn trái cho dễ đọc trên mobile */
         }
 
         .signature {
-            font-size: 1.5rem;
+            font-size: clamp(1.1rem, 4vw, 1.5rem);
             color: #ff6b6b;
             font-weight: bold;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
@@ -149,11 +160,11 @@
 
         /* Hiệu ứng gõ chữ */
         .typewriter {
-            border-right: 3px solid #ffeb3b;
+            border-right: 2px solid #ffeb3b;
             animation: blink 1s infinite;
         }
 
-        /* Trái tim bay */
+        /* Trái tim bay - giảm số lượng trên mobile */
         .floating-hearts {
             position: absolute;
             top: 0;
@@ -166,31 +177,33 @@
 
         .heart {
             position: absolute;
-            font-size: 2rem;
+            font-size: clamp(1.2rem, 4vw, 2rem);
             color: #ff6b6b;
             animation: float 6s linear infinite;
             opacity: 0.7;
         }
 
-        /* Điều khiển âm thanh */
+        /* Điều khiển âm thanh - tối ưu cho mobile */
         .music-control {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: clamp(15px, 4vw, 20px);
+            right: clamp(15px, 4vw, 20px);
             background: rgba(255,255,255,0.2);
             border: none;
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
+            width: clamp(50px, 12vw, 60px);
+            height: clamp(50px, 12vw, 60px);
             color: white;
-            font-size: 1.5rem;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
             cursor: pointer;
             z-index: 100;
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
+            touch-action: manipulation;
         }
 
-        .music-control:hover {
+        .music-control:hover,
+        .music-control:active {
             background: rgba(255,255,255,0.3);
             transform: scale(1.1);
         }
@@ -234,28 +247,72 @@
             }
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .content {
-                padding: 1rem;
-                max-width: 95%;
-            }
-            
+        /* Responsive cho các thiết bị nhỏ */
+        @media (max-width: 480px) {
             .love-letter {
-                padding: 2rem;
-            }
-            
-            .letter-title {
-                font-size: 2rem;
+                padding: 1rem;
+                border-radius: 15px;
             }
             
             .letter-content {
-                font-size: 1.1rem;
+                font-size: 0.95rem;
+                line-height: 1.5;
             }
             
-            .open-letter {
-                font-size: 1.5rem;
+            .open-letter p {
+                font-size: 1rem;
+                padding: 0 1rem;
             }
+            
+            .envelope {
+                width: 70px;
+                height: 47px;
+            }
+            
+            .envelope::before {
+                border: 35px solid transparent;
+                border-bottom: 23px solid #ff6b6b;
+            }
+        }
+
+        /* Landscape orientation cho mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .content {
+                top: 50%;
+                padding: 0.5rem;
+            }
+            
+            .love-letter {
+                padding: 1rem;
+                max-height: 90vh;
+            }
+            
+            .letter-title {
+                margin-bottom: 0.5rem;
+            }
+            
+            .letter-content {
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        /* Tối ưu cho thiết bị có notch */
+        @supports (padding: max(0px)) {
+            .content {
+                padding-left: max(1rem, env(safe-area-inset-left));
+                padding-right: max(1rem, env(safe-area-inset-right));
+            }
+            
+            .music-control {
+                top: max(20px, env(safe-area-inset-top) + 10px);
+                right: max(20px, env(safe-area-inset-right) + 10px);
+            }
+        }
+
+        /* Ẩn scrollbar trên mobile */
+        .love-letter::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
         }
     </style>
 </head>
@@ -264,13 +321,13 @@
     <div class="open-letter" id="openLetter">
         <h1>💕 Thư Gửi Em Bé 💕</h1>
         <div class="envelope"></div>
-        <p style="margin-top: 2rem; font-size: 1.2rem;">Nhấn để mở thư từ trái tim của anh </p>
+        <p style="margin-top: 1rem;">Chạm để mở thư từ trái tim của anh ❤️</p>
     </div>
 
     <!-- Container chính -->
     <div class="main-container" id="mainContainer">
         <!-- Video nền -->
-        <video class="background-video" autoplay muted loop>
+        <video class="background-video" autoplay muted loop playsinline>
             <source src="https://txmov2.a.kwimgs.com/upic/2024/05/08/11/BMjAyNDA1MDgxMTQ3MjBfMzAyOTc4ODMzNF8xMzE4NzA2NDcxMzJfMF8z_b_B154839b05f89ba0ef9ee25a3d83558cd.mp4" type="video/mp4">
         </video>
         
@@ -288,7 +345,7 @@
                     <p id="typewriterText" class="typewriter"></p>
                 </div>
                 <div class="signature">
-                    💕 Với tất cả tình yêu của anhhh💕
+                    💕 Với tất cả tình yêu của anh 💕
                 </div>
             </div>
         </div>
@@ -300,7 +357,7 @@
     </div>
 
     <!-- Audio -->
-    <audio id="backgroundMusic" loop>
+    <audio id="backgroundMusic" loop preload="metadata">
         <source src="DamDuoi-KidsaiBbynascar-7076233.mp3" type="audio/mpeg">
     </audio>
 
@@ -308,18 +365,13 @@
         // Văn bản sẽ được gõ ra
         const loveText = `Em yêu của anh,
 
-Từng giây phút bên em đều là những khoảnh khắc đẹp nhất trong cuộc đời anh. 
-Em như ánh nang ấm áp, xua tan mọi u buồn trong lòng anh.
+Từng giây phút bên em đều là những khoảnh khắc đẹp nhất trong cuộc đời anh. Em như ánh nắng ấm áp, xua tan mọi u buồn trong lòng anh.
 
-Anh yêu nụ cười của em, yêu cách em cười khi anh làm những điều ngớ ngẩn.
-Anh yêu đôi mắt em, trong đó anh thấy cả một tương lai tươi đẹp.
+Anh yêu nụ cười của em, yêu cách em cười khi anh làm những điều ngớ ngẩn. Anh yêu đôi mắt em, trong đó anh thấy cả một tương lai tươi đẹp.
 
-Dù có những lúc chúng ta hiểu làm nhau, nhưng tình yêu của anh dành cho em 
-không bao giờ thay đổi. Em là điều tuyệt vời nhất đã đến với anh.
+Dù có những lúc chúng ta hiểu lầm nhau, nhưng tình yêu của anh dành cho em không bao giờ thay đổi. Em là điều tuyệt vời nhất đã đến với anh.
 
-Anh luôn bên em, che chở và yêu thương em mỗi ngày.
-Hãy để anh được là người đàn ông may mắn nhất trên đời này 
-bằng cách ở bên anh mãi mãi, em nhé!`;
+Anh luôn bên em, che chở và yêu thương em mỗi ngày. Hãy để anh được là người đàn ông may mắn nhất trên đời này bằng cách ở bên anh mãi mãi, em nhé!`;
 
         // Elements
         const openLetter = document.getElementById('openLetter');
@@ -332,25 +384,31 @@ bằng cách ở bên anh mãi mãi, em nhé!`;
         let musicPlaying = false;
         let typewriterIndex = 0;
         let isTyping = false;
+        let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
         // Mở thư
-        openLetter.addEventListener('click', function() {
+        function openLetterHandler() {
             openLetter.style.transform = 'translateY(-100%)';
             setTimeout(() => {
                 openLetter.style.display = 'none';
                 mainContainer.style.display = 'block';
                 startTypewriter();
                 createFloatingHearts();
-                playMusic();
+                // Thử phát nhạc ngay lập tức
+                tryPlayMusic();
             }, 500);
-        });
+        }
 
-        // Hiệu ứng gõ chữ
+        // Thêm event listeners cho cả click và touch
+        openLetter.addEventListener('click', openLetterHandler);
+        openLetter.addEventListener('touchstart', openLetterHandler, { passive: false });
+
+        // Hiệu ứng gõ chữ - tăng tốc cho mobile
         function startTypewriter() {
             if (isTyping) return;
             isTyping = true;
             
-            const typeSpeed = 50;
+            const typeSpeed = isMobile ? 30 : 50; // Nhanh hơn trên mobile
             
             function typeNextChar() {
                 if (typewriterIndex < loveText.length) {
@@ -366,9 +424,10 @@ bằng cách ở bên anh mãi mãi, em nhé!`;
             typeNextChar();
         }
 
-        // Tạo trái tim bay
+        // Tạo trái tim bay - giảm tần suất trên mobile
         function createFloatingHearts() {
             const hearts = ['💖', '💕', '💗', '💓', '💝', '❤️', '💜', '💙'];
+            const interval = isMobile ? 1500 : 800; // Ít tim hơn trên mobile
             
             setInterval(() => {
                 const heart = document.createElement('div');
@@ -376,54 +435,84 @@ bằng cách ở bên anh mãi mãi, em nhé!`;
                 heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
                 heart.style.left = Math.random() * 100 + '%';
                 heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
-                heart.style.fontSize = (Math.random() * 1 + 1.5) + 'rem';
+                heart.style.fontSize = (Math.random() * 0.5 + 1.2) + 'rem';
                 
                 floatingHearts.appendChild(heart);
                 
-                // Xóa trái tim sau khi animation kết thúc
                 setTimeout(() => {
                     if (heart.parentNode) {
                         heart.parentNode.removeChild(heart);
                     }
                 }, 7000);
-            }, 800);
+            }, interval);
         }
 
-        // Điều khiển nhạc
-        function playMusic() {
-            backgroundMusic.play().catch(e => {
-                console.log('Không thể tự động phát nhạc:', e);
+        // Điều khiển nhạc - cải thiện cho mobile
+        function tryPlayMusic() {
+            backgroundMusic.play().then(() => {
+                musicPlaying = true;
+                musicControl.textContent = '🎵';
+            }).catch(e => {
+                console.log('Cần tương tác để phát nhạc:', e);
+                musicPlaying = false;
+                musicControl.textContent = '🔇';
             });
-            musicPlaying = true;
         }
 
-        musicControl.addEventListener('click', function() {
+        function toggleMusic() {
             if (musicPlaying) {
                 backgroundMusic.pause();
                 musicControl.textContent = '🔇';
                 musicPlaying = false;
             } else {
-                backgroundMusic.play();
-                musicControl.textContent = '🎵';
-                musicPlaying = true;
+                backgroundMusic.play().then(() => {
+                    musicControl.textContent = '🎵';
+                    musicPlaying = true;
+                }).catch(e => {
+                    console.log('Không thể phát nhạc:', e);
+                });
             }
+        }
+
+        // Event listeners cho music control
+        musicControl.addEventListener('click', toggleMusic);
+        musicControl.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            toggleMusic();
+        }, { passive: false });
+
+        // Tự động phát nhạc khi có tương tác
+        document.addEventListener('touchstart', function() {
+            if (!musicPlaying && mainContainer.style.display === 'block') {
+                tryPlayMusic();
+            }
+        }, { once: true, passive: true });
+
+        document.addEventListener('click', function() {
+            if (!musicPlaying && mainContainer.style.display === 'block') {
+                tryPlayMusic();
+            }
+        }, { once: true });
+
+        // Xử lý orientation change
+        window.addEventListener('orientationchange', function() {
+            setTimeout(() => {
+                // Force redraw để tránh bug layout
+                document.body.style.display = 'none';
+                document.body.offsetHeight; // Trigger reflow
+                document.body.style.display = '';
+            }, 100);
         });
 
-        // Phát nhạc khi người dùng tương tác
-        document.addEventListener('click', function() {
-            if (!musicPlaying) {
-                playMusic();
+        // Ngăn zoom khi double tap trên iOS
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            let now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
             }
-        }, { once: true });
-
-        // Hiệu ứng khi cuộn chuột (mobile)
-        document.addEventListener('touchstart', function() {
-            if (!musicPlaying) {
-                playMusic();
-            }
-        }, { once: true });
+            lastTouchEnd = now;
+        }, false);
     </script>
 </body>
 </html>
-
-
